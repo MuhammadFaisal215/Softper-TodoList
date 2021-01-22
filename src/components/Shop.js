@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from "react"
 import {Link} from 'react-router-dom'
+import axios from "axios"
 
 function Shop(){
     const [items, setItems] = useState([])
@@ -9,10 +10,14 @@ function Shop(){
         fetchItems()
     },[])
     async function fetchItems(){
-        const data =await fetch(`https://jsonplaceholder.typicode.com/albums?userId=1`)
-        const items = await data.json()
-        setItems(items)
-        setLoading(false)
+        axios.get(`https://jsonplaceholder.typicode.com/albums?userId=1`)
+            .then(response => {
+                setItems(response.data)
+                setLoading(false)
+            })
+            .catch(error => {
+                alert('Error retrieving data')
+            })
     }
     const tags = loading ?
         <h3 className="text-center">Loading. Please wait...</h3>

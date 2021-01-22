@@ -1,4 +1,5 @@
 import React,{useState, useEffect} from "react"
+import axios from "axios"
 
 function ShopDetail({match}){
     const [item, setItem] = useState([])
@@ -10,10 +11,14 @@ function ShopDetail({match}){
 
     ////    TO FETCH DETAILS FROM API
     async function fetchItem(){
-        const data =await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${match.params.id}`)
-        const items = await data.json()
-        setItem(items)
-        setLoading(false)
+        axios.get(`https://jsonplaceholder.typicode.com/photos?albumId=${match.params.id}`)
+            .then(response => {
+                setItem(response.data)
+                setLoading(false)
+            })
+            .catch(error => {
+                alert('Error retrieving data')
+            })
     }
     let tags = loading ?
         <div className="col-12 text-center"><div className="card"><div className="card-body"><h4>Loading. Please wait...</h4></div></div></div>
