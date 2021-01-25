@@ -1,5 +1,6 @@
 import React, {useContext} from "react"
 import {ItemsContext} from "../App";
+import {REMOVE_ELEMENT, MARKED_CHECKED} from "../constants/constants";
 
 function TodoItem(props) {
     const itemContext = useContext(ItemsContext)
@@ -9,17 +10,31 @@ function TodoItem(props) {
             <div className="checker">
                 <span className="">
                     <input type="checkbox"
-                           onChange={(event) => itemContext.itemDispatch({type:"markedChecked", id:props.item.id, event:event})}
+                           onChange={(event) => {
+                               let indexOfTodo = itemContext.itemState.findIndex(item => item.id === props.item.id)
+                               if(indexOfTodo >= 0){
+                                   itemContext.itemDispatch({type: MARKED_CHECKED, value: {indexOfTodo: indexOfTodo}})
+                               }
+                           }}
                            checked={props.item.completed}
                     />
                 </span>
             </div>
             <span className="ml-2">{props.item.task}</span>
-            <span onClick={() => itemContext.itemDispatch({type:"removeElement", id:props.item.id})} className="float-right">
+            <span
+                onClick={() => {
+                    let indexOfTodo = itemContext.itemState.findIndex(item => item.id === props.item.id)
+                    if(indexOfTodo >= 0){
+                        itemContext.itemDispatch({type:REMOVE_ELEMENT, value: {indexOfTodo: indexOfTodo}})
+                    }
+                }}
+                className="float-right"
+            >
                 x
             </span>
         </div>
     )
 }
+
 
 export default TodoItem

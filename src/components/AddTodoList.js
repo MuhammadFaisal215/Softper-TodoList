@@ -1,12 +1,24 @@
-import React, {useContext} from "react"
-import {ItemsContext} from '../App'
+import React, {useContext} from "react";
+import {ItemsContext} from '../App';
+import {NEW_ELEMENT} from "../constants/constants";
 
 function AddTodoList(props){
     const itemContext = useContext(ItemsContext)
     return (
         <form
             onSubmit={event => {
-                itemContext.itemDispatch({type:'newElement', event: event})
+                event.preventDefault()
+                let task = document.getElementsByClassName('add-task')[0].value
+                if(task && task !== ''){
+                    const todos = itemContext.itemState;
+                    const exist = todos.findIndex(todo => todo.task === task)
+                    if(exist >= 0){
+                        alert('Item already added!.')
+                    }else{
+                        itemContext.itemDispatch({type:NEW_ELEMENT, value:{task:task}})
+                        event.target.reset();
+                    }
+                }
             }}
         >
             <div className="form-row">
@@ -17,7 +29,6 @@ function AddTodoList(props){
                     <button className="btn btn-success w-100">Add</button>
                 </div>
             </div>
-
 
         </form>
     )

@@ -1,33 +1,28 @@
 import React,{useState, useEffect} from "react"
 import {Link} from 'react-router-dom'
-import axios from "axios"
+import {fetchItems} from "../services/services.js"
 
 function Shop(){
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetchItems()
+        getItems()
     },[])
-    async function fetchItems(){
-        axios.get(`https://jsonplaceholder.typicode.com/albums?userId=1`)
-            .then(response => {
-                setItems(response.data)
-                setLoading(false)
-            })
-            .catch(error => {
-                alert('Error retrieving data')
-            })
+    async function getItems(){
+        let response = await fetchItems();
+        setItems(response.data)
+        setLoading(response.loading)
     }
-    const tags = loading ?
+    const data = loading ?
         <h3 className="text-center">Loading. Please wait...</h3>
         :
         items.map(item => {
-        return <h3 key={item.id} ><Link to={`/albums/${item.id}`}>{item.title}</Link><hr/></h3>
-    })
+            return <h3 key={item.id} ><Link to={`/albums/${item.id}`}>{item.title}</Link><hr/></h3>
+        })
     return (
         <div>
-            <center>{tags}</center>
+            <center>{data}</center>
         </div>
     )
 }

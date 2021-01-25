@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from "react"
-import axios from "axios"
+import {fetchItemDetail} from "../services/services.js"
+import ShopItem from "./ShopItem";
 
 function ShopDetail({match}){
     const [item, setItem] = useState([])
@@ -11,38 +12,22 @@ function ShopDetail({match}){
 
     ////    TO FETCH DETAILS FROM API
     async function fetchItem(){
-        axios.get(`https://jsonplaceholder.typicode.com/photos?albumId=${match.params.id}`)
-            .then(response => {
-                setItem(response.data)
-                setLoading(false)
-            })
-            .catch(error => {
-                alert('Error retrieving data')
-            })
+        let response = await fetchItemDetail(match.params.id)
+        setItem(response.data)
+        setLoading(response.loading)
     }
-    let tags = loading ?
+    ////    SET THE ITEM CARDS
+    let data = loading ?
         <div className="col-12 text-center"><div className="card"><div className="card-body"><h4>Loading. Please wait...</h4></div></div></div>
         :
-        item.map(item => {
-            return (
-                <div key={item.id} className="col-md-4 col-sm-6 col-lg-3 py-2">
-                    <div className='card h-100'>
-                        <div className="card-body">
-                            <img src={item.url} width="100%"/>
-                            <p>{item.title}</p>
-                        </div>
-                    </div>
-                </div>
-            )
-        })
+        item.map(item => <ShopItem item={item}/> )
 
     return (
         <div className="container">
             <div className="row mt-2">
-                {tags}
+                {data}
             </div>
         </div>
-
     )
 }
 
