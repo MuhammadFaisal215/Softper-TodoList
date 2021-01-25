@@ -1,21 +1,25 @@
 import './App.css';
-import React, {useReducer} from "react"
+import {useEffect} from "react"
 import {BrowserRouter as RouterView, Switch, Route} from 'react-router-dom'
 import TodoContainerComponent from "./components/TodoContainer";
 import NavbarComponent from "./components/Navbar";
 import ShopComponent from "./components/Shop";
 import ShopDetailComponent from "./components/ShopDetail";
 import TodoReducers from "./reducers/TodoReducers";
+import {createStore} from "redux";
+import {Provider} from 'react-redux'
+import {getList} from "./actions/actions";
 
-export const ItemsContext = React.createContext();
-
-const initState = []
+const store = createStore(TodoReducers)
 
 function App(){
-    const [state, dispatch] = useReducer(TodoReducers, initState)
+
+    useEffect(() => {
+        store.dispatch(getList())
+    },[])
+
     return (
-        <ItemsContext.Provider
-            value={{itemState: state, itemDispatch: dispatch}}>
+        <Provider store={store}>
             <RouterView>
                 <div>
                     <NavbarComponent />
@@ -27,7 +31,7 @@ function App(){
                     </Switch>
                 </div>
             </RouterView>
-        </ItemsContext.Provider>
+        </Provider>
     )
 }
 

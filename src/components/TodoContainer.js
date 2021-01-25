@@ -1,14 +1,12 @@
-import React, {useContext} from 'react'
 import TodoItemComponent from "./TodoItem";
 import AddTodoListComponent from "./AddTodoList";
-import {ItemsContext} from "../App";
+import {useSelector} from 'react-redux'
 
 function TodoContainer(){
-    const itemContext = useContext(ItemsContext)
+    const itemState = useSelector(state => state)
 
     //    SHOWS THE UPDATED LIST
-    const list= itemContext.itemState.map(item => <TodoItemComponent key={item.id} item={item} /> )
-
+    const list= itemState.map(item => <TodoItemComponent key={item.id} item={item} /> )
     return (
         <div className="container-fluid">
             <div className="row justify-content-center">

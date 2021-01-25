@@ -1,9 +1,10 @@
-import React, {useContext} from "react"
-import {ItemsContext} from "../App";
-import {REMOVE_ELEMENT, MARKED_CHECKED} from "../constants/constants";
+import {useDispatch, useSelector} from "react-redux";
+import {markedChecked, removeElement} from "../actions/actions";
 
 function TodoItem(props) {
-    const itemContext = useContext(ItemsContext)
+    const itemState = useSelector(state => state)
+    const itemDispatch = useDispatch();
+
     const complete = props.item.completed ? "todo-item complete" : "todo-item"
     return (
         <div className={complete}>
@@ -11,9 +12,9 @@ function TodoItem(props) {
                 <span className="">
                     <input type="checkbox"
                            onChange={(event) => {
-                               let indexOfTodo = itemContext.itemState.findIndex(item => item.id === props.item.id)
+                               let indexOfTodo = itemState.findIndex(item => item.id === props.item.id)
                                if(indexOfTodo >= 0){
-                                   itemContext.itemDispatch({type: MARKED_CHECKED, value: {indexOfTodo: indexOfTodo}})
+                                   itemDispatch(markedChecked(indexOfTodo))
                                }
                            }}
                            checked={props.item.completed}
@@ -23,9 +24,9 @@ function TodoItem(props) {
             <span className="ml-2">{props.item.task}</span>
             <span
                 onClick={() => {
-                    let indexOfTodo = itemContext.itemState.findIndex(item => item.id === props.item.id)
+                    let indexOfTodo = itemState.findIndex(item => item.id === props.item.id)
                     if(indexOfTodo >= 0){
-                        itemContext.itemDispatch({type:REMOVE_ELEMENT, value: {indexOfTodo: indexOfTodo}})
+                        itemDispatch(removeElement(indexOfTodo))
                     }
                 }}
                 className="float-right"

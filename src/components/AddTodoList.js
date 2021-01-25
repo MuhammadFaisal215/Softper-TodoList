@@ -1,21 +1,22 @@
-import React, {useContext} from "react";
-import {ItemsContext} from '../App';
-import {NEW_ELEMENT} from "../constants/constants";
+import {useSelector, useDispatch} from 'react-redux'
+import {newElement} from "../actions/actions";
 
-function AddTodoList(props){
-    const itemContext = useContext(ItemsContext)
+function AddTodoList(){
+    const itemState = useSelector(state => state)
+    const itemDispatch = useDispatch();
+
     return (
         <form
             onSubmit={event => {
                 event.preventDefault()
                 let task = document.getElementsByClassName('add-task')[0].value
                 if(task && task !== ''){
-                    const todos = itemContext.itemState;
+                    const todos = itemState;
                     const exist = todos.findIndex(todo => todo.task === task)
                     if(exist >= 0){
                         alert('Item already added!.')
                     }else{
-                        itemContext.itemDispatch({type:NEW_ELEMENT, value:{task:task}})
+                        itemDispatch(newElement(task))
                         event.target.reset();
                     }
                 }
