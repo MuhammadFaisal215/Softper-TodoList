@@ -15,18 +15,15 @@ function TodoReducers(state = [], action){
             return state
     }
 }
+
 function getList(state){
     let todos = [...state]
     todos = JSON.parse(localStorage.getItem('todo_list')) || []
     return todos
 }
 
-function setList(todos){
-    localStorage.setItem('todo_list', JSON.stringify(todos))
-}
-
 function newElement(state, action){
-    const task = action.value.task
+    const task = action.payLoad.task
     let todos = _.cloneDeep(state)
     let indexOfTodo = todos.length + 1
     let id = indexOfTodo === 1 ? 1 : todos[indexOfTodo-2]['id']+1
@@ -36,7 +33,7 @@ function newElement(state, action){
 }
 
 function markedChecked(state, action){
-    const indexOfTodo = action.value.indexOfTodo
+    const indexOfTodo = action.payLoad.indexOfTodo
     let todos = _.cloneDeep(state)
     todos[indexOfTodo]['completed'] = !todos[indexOfTodo]['completed']
     setList(todos)
@@ -44,11 +41,15 @@ function markedChecked(state, action){
 }
 
 function removeElement(state, action){
-    const indexOfTodo = action.value.indexOfTodo
+    const indexOfTodo = action.payLoad.indexOfTodo
     let todos = [...state]
     todos.splice(indexOfTodo, 1)
     setList(todos)
     return todos
+}
+
+function setList(todos){
+    localStorage.setItem('todo_list', JSON.stringify(todos))
 }
 
 export default TodoReducers

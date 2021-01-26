@@ -9,7 +9,7 @@ export const getList = () => {
 export const newElement = (task) => {
     return {
         type:NEW_ELEMENT,
-        value:{
+        payLoad:{
             task:task
         }
     }
@@ -18,7 +18,7 @@ export const newElement = (task) => {
 export const markedChecked = (indexOfTodo) => {
     return {
         type: MARKED_CHECKED,
-        value: {
+        payLoad: {
             indexOfTodo: indexOfTodo
         }
     }
@@ -27,7 +27,7 @@ export const markedChecked = (indexOfTodo) => {
 export const removeElement = (indexOfTodo) => {
     return {
         type:REMOVE_ELEMENT,
-        value: {
+        payLoad: {
             indexOfTodo: indexOfTodo
         }
     }
