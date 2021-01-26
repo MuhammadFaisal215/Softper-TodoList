@@ -7,20 +7,7 @@ function AddTodoList(){
 
     return (
         <form
-            onSubmit={event => {
-                event.preventDefault()
-                let task = document.getElementsByClassName('add-task')[0].value
-                if(task && task !== ''){
-                    const todos = itemState;
-                    const exist = todos.findIndex(todo => todo.task === task)
-                    if(exist >= 0){
-                        alert('Item already added!.')
-                    }else{
-                        itemDispatch(newElement(task))
-                        event.target.reset();
-                    }
-                }
-            }}
+            onSubmit={event => _onSubmit(event)}
         >
             <div className="form-row">
                 <div className="form-group col-md-10">
@@ -33,6 +20,21 @@ function AddTodoList(){
 
         </form>
     )
+
+    function _onSubmit(event){
+        event.preventDefault()
+        let task = document.getElementsByClassName('add-task')[0].value
+        if(task && task !== ''){
+            const todos = itemState;
+            const exist = todos.findIndex(todo => todo.task === task)
+            if(exist >= 0){
+                alert('Item already added!.')
+            }else{
+                itemDispatch(newElement(task))
+                event.target.reset();
+            }
+        }
+    }
 }
 
 export default AddTodoList
